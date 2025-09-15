@@ -1,0 +1,150 @@
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+
+#define for0(i, n) for (int i = 0; i < (int)(n); ++i)
+#define for1(i, n) for (int i = 1; i <= (int)(n); ++i)
+#define forc(i, l, r) for (int i = (int)(l); i <= (int)(r); ++i)
+#define forr0(i, n) for (int i = (int)(n) - 1; i >= 0; --i)
+#define forr1(i, n) for (int i = (int)(n); i >= 1; --i)
+
+#define pb push_back
+#define fi first
+#define se second
+#define nl "\n"
+
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define VI(x, n) vi x(n); for (int i = 0; i < n; i++) { cin >> x[i]; };
+#define VVI(x, n, m) vvi x(n, vi(m)); for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) { cin >> x[i][j]; };
+#define VLL(x, n) vll x(n); for (int i = 0; i < n; i++) { cin >> x[i]; };
+
+#define present(c, x) ((c).find(x) != (c).end())
+
+#define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
+#define ordered_multi_set tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
+
+using namespace std;
+using namespace __gnu_pbds;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef map<int, int> mii;
+typedef map<ll, ll> mll;
+typedef unordered_map<int, int> umii;
+typedef unordered_map<ll, ll> umll;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef vector<pii> vpii;
+typedef vector<pll> vpll;
+typedef vector<ll> vll;
+typedef vector<vll> vvll;
+typedef vector<string> vs;
+typedef vector<char> vc;
+
+int64_t pw(int64_t a, int64_t b, int64_t mod)
+{
+    int64_t r = 1;
+
+    while (b > 0)
+    {
+        if (b & 1) r = (r * a) % mod;
+        b /= 2;
+        a = (a * a) % mod;
+    }
+
+    return r;
+}
+
+int64_t nCrm(int64_t n, int64_t k, vll& fact, int64_t mod)
+{
+    if(n < k) return 0LL;
+    return (fact[n] * pw((fact[n - k] * fact[k]) % mod, mod - 2, mod)) % mod;
+}
+
+class DSU
+{
+public:
+    vi parent;
+    vi rank;
+    int n;
+
+    DSU(int _n)
+    {
+        n = _n;
+        parent = vi(n + 1);
+        rank = vi(n + 1, 0);
+
+        for1(i, n) parent[i] = i;
+    }
+
+    int find_set(int v)
+    {
+        if (v == parent[v])
+            return v;
+        return parent[v] = find_set(parent[v]);
+    }
+
+    void union_sets(int a, int b)
+    {
+        a = find_set(a);
+        b = find_set(b);
+        if (a != b)
+        {
+            if (rank[a] < rank[b])
+                swap(a, b);
+            parent[b] = a;
+            if (rank[a] == rank[b])
+                rank[a]++;
+        }
+    }
+
+    vi get_all_parents()
+    {
+        vi ans;
+
+        for1(i, n)
+        {
+            if (parent[i] == i)
+                ans.push_back(i);
+        }
+
+        return ans;
+    }
+
+    int get_parents()
+    {
+        int ans = 0;
+
+        for1(i, n)
+        {
+            if (parent[i] == i)
+                ans++;
+        }
+
+        return ans;
+    }
+};
+
+////////////////////// focus on the input not the output //////////////////////
+
+void solve()
+{
+    
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        solve();
+    }
+
+    return 0;
+}
