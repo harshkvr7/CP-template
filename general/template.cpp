@@ -42,6 +42,8 @@ typedef vector<ll> vll;
 typedef vector<vll> vvll;
 typedef vector<string> vs;
 typedef vector<char> vc;
+typedef priority_queue<int, vi, greater<int>> min_pq;
+typedef priority_queue<int> max_pq;
 
 int64_t pw(int64_t a, int64_t b, int64_t mod)
 {
@@ -147,4 +149,4 @@ int main() {
     }
 
     return 0;
-}
+} 
