@@ -8,6 +8,7 @@
 #define forr0(i, n) for (ll i = (ll)(n) - 1; i >= 0; --i)
 #define forr1(i, n) for (ll i = (ll)(n); i >= 1; --i)
 
+#define int long long
 #define pb push_back
 #define fi first
 #define se second
@@ -45,25 +46,78 @@ typedef vector<char> vc;
 typedef priority_queue<int, vi, greater<int>> min_pq;
 typedef priority_queue<int> max_pq;
 
-int64_t pw(int64_t a, int64_t b, int64_t mod)
-{
-    int64_t r = 1;
+ll MOD = 998244353; // change in main if required
 
-    while (b > 0)
-    {
-        if (b & 1) r = (r * a) % mod;
-        b /= 2;
-        a = (a * a) % mod;
+inline ll addm(ll a, ll b) { 
+    return (a + b) % MOD; 
+}
+
+inline ll subm(ll a, ll b) { 
+    return ((a - b) % MOD + MOD) % MOD; 
+}
+
+inline ll mulm(ll a, ll b) { 
+    return (a * b) % MOD; 
+}
+
+inline ll powm(ll base, ll exp) {
+    ll res = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = mulm(res, base);
+        base = mulm(base, base);
+        exp /= 2;
+    }
+    return res;
+}
+
+inline ll invm(ll n) { 
+    return powm(n, MOD - 2); 
+}
+
+inline ll divm(ll a, ll b) { 
+    return mulm(a, invm(b)); 
+}
+
+struct Comb {
+    int n;
+    vector<ll> _fact, _invFact;
+    
+    Comb(int _n) : n(_n), _fact(_n + 1), _invFact(_n + 1) {
+        _fact[0] = 1;
+        _invFact[0] = 1;
+        
+        for (int i = 1; i <= n; i++) {
+            _fact[i] = mulm(_fact[i - 1], i);
+        }
+        
+        _invFact[n] = invm(_fact[n]);
+        for (int i = n - 1; i >= 1; i--) {
+            _invFact[i] = mulm(_invFact[i + 1], i + 1);
+        }
     }
 
-    return r;
-}
+    ll nCr(int n, int r) {
+        if (r < 0 || r > n) return 0;
+        return mulm(_fact[n], mulm(_invFact[r], _invFact[n - r]));
+    }
 
-int64_t nCrm(int64_t n, int64_t k, vll& fact, int64_t mod)
-{
-    if(n < k) return 0LL;
-    return (fact[n] * pw((fact[n - k] * fact[k]) % mod, mod - 2, mod)) % mod;
-}
+    ll nPr(int n, int r) {
+        if (r < 0 || r > n) return 0;
+        return mulm(_fact[n], _invFact[n - r]);
+    }
+    
+    // Stars and Bars (ways to distribute n identical items into k distinct bins)
+    ll starsAndBars(int n, int k) {
+        if (n == 0 && k == 0) return 1;
+        return nCr(n + k - 1, k - 1);
+    }
+    
+    ll fact(int k) {
+        if (k < 0 || k > n) return 0; 
+        return _fact[k];
+    }
+};
 
 class DSU
 {
@@ -333,6 +387,16 @@ valueType SegmentTree<valueType, modType, elementModificationOnly>::query(size_t
                  query(cur << 1 | 1, (l + r) >> 1, r, L, R));
 }
 
+// ll mergeSum(const ll& a, const ll& b)
+// {
+//     return a + b;
+// }
+
+// void updateSum(SegmentTreeNode<long long, long long>& node, const long long& m)
+// {
+//     node.val += m;
+// }
+
 ////////////////////// focus on the input not the output //////////////////////
 
 void solve()
@@ -340,9 +404,11 @@ void solve()
 
 }
 
-int main() {
+signed main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
+
+    MOD = 998244353;
 
     int t = 1;
     //atc atc atc
