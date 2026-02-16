@@ -1,3 +1,5 @@
+<snippet>
+	<content><![CDATA[
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -46,7 +48,7 @@ typedef vector<char> vc;
 typedef priority_queue<int, vi, greater<int>> min_pq;
 typedef priority_queue<int> max_pq;
 
-ll MOD = 998244353; // change in main if required
+ll MOD = 998244353; 
 
 inline ll addm(ll a, ll b) { 
     return (a + b) % MOD; 
@@ -107,7 +109,6 @@ struct Comb {
         return mulm(_fact[n], _invFact[n - r]);
     }
     
-    // Stars and Bars (ways to distribute n identical items into k distinct bins)
     ll starsAndBars(int n, int k) {
         if (n == 0 && k == 0) return 1;
         return nCr(n + k - 1, k - 1);
@@ -116,6 +117,57 @@ struct Comb {
     ll fact(int k) {
         if (k < 0 || k > n) return 0; 
         return _fact[k];
+    }
+};
+
+template < typename T = int > struct Sieve {
+    vector < bool > is_prime;
+    vector < T > primes;
+    vector < T > spf;
+    bool has_spf;
+
+    Sieve(int n, bool compute_spf = false) {
+        has_spf = compute_spf;
+        is_prime.assign(n + 1, true);
+        is_prime[0] = is_prime[1] = false;
+
+        if (has_spf) {
+            spf.resize(n + 1);
+            iota(spf.begin(), spf.end(), 0);
+        }
+
+        for (long long i = 2; i * i <= n; i++) {
+            if (is_prime[i]) 
+            {
+                for (long long j = i * i; j <= n; j += i) {
+                    if (is_prime[j]) {
+                        is_prime[j] = false;
+                        if (has_spf) spf[j] = i; 
+                    }
+                }
+            }
+        }
+    }
+
+    void get_primes(int n) {
+        primes.clear();
+        for (int i = 2; i <= n; i++)
+            if (is_prime[i])
+                primes.push_back(i);
+    }
+
+    vector<pair<T, int>> factorize(int x) {
+        vector<pair<T, int>> factors;
+        while (x > 1) {
+            int p = spf[x];
+            int cnt = 0;
+            while (x % p == 0) {
+                cnt++;
+                x /= p;
+            }
+            factors.push_back({p, cnt});
+        }
+        return factors;
     }
 };
 
@@ -421,3 +473,7 @@ signed main() {
 
     return 0;
 }
+]]></content>
+	<tabTrigger>cp</tabTrigger>
+    <scope>source.c++</scope>
+</snippet>
