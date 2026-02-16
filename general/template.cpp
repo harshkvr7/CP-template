@@ -235,17 +235,6 @@ public:
     }
 };
 
-int highest_set_bit(ll num)
-{
-    if(num == 0) return 0;
-
-    int i = 0;
-
-    while(num >= 1LL << i) i++;
-
-    return i;
-}
-
 template <typename valueType, typename modType>
 struct SegmentTreeNode
 {
@@ -453,7 +442,7 @@ valueType SegmentTree<valueType, modType, elementModificationOnly>::query(size_t
 
 void solve()
 {
-
+    $0
 }
 
 signed main() {
